@@ -19,12 +19,15 @@ export async function run(): Promise<void> {
       state: 'open'
     })
 
+    core.info(`found ${prs.data.length} open prs`)
+
     for (const pr of prs.data) {
+      core.debug(`checking ${pr.title} (${pr.number})`)
       if (
         pr.author_association === 'OWNER' &&
         pr.labels.find(({ name }) => name == label) !== undefined
       ) {
-        core.debug(`merging ${pr.title} (${pr.number})`)
+        core.info(`merging ${pr.title} (${pr.number})`)
         octokit.rest.pulls.merge({
           ...context.repo,
           pull_number: pr.number,
