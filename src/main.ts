@@ -24,6 +24,7 @@ export async function run(): Promise<void> {
         pr.author_association === 'OWNER' &&
         pr.labels.find(({ name }) => name == label) !== undefined
       ) {
+        core.debug(`merging ${pr.title} (${pr.number})`)
         octokit.rest.pulls.merge({
           ...context.repo,
           pull_number: pr.number,
